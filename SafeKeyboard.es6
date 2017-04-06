@@ -100,7 +100,7 @@ class Keyboard {
         }
         console.log(this.inputer)
     }
-    show(){
+    show(dom){
         let body = document.getElementsByTagName('body')[0];
         body.appendChild(dom);
     }
