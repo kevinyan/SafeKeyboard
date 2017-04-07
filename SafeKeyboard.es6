@@ -34,7 +34,12 @@ class Keyboard {
     constructor(params){
         this.params = params;
         this.keyamount = 12;
-        this.inputer='' ;
+        this.inputer = {
+            'value':''
+        };
+        this.mvvm(this.inputer,'value','')
+        
+
         this.showMap=[
             {'value':1,'facevalue':1,'showindex':1},
             {'value':2,'facevalue':2,'showindex':2},
@@ -83,7 +88,13 @@ class Keyboard {
         this.showMap.forEach(v => {
             let domk = document.getElementById('keyboard'+v.value);
             if(domk){
-                domk.addEventListener('click' ,e => this.delete(v.value) ,false)
+                domk.addEventListener('click' ,e => {
+
+                  var k = this.calculate(this.inputer.value , v.value);
+                  this.inputer['value'] = k;
+
+                  this.mvvm(this.inputer,'value',k);
+                },false)
             }
         })
 
@@ -92,13 +103,15 @@ class Keyboard {
         let keybtn = new KeyboardButton();
         return keybtn.create(val,this.params);        
     }
-    delete(val){
+    calculate(oldval,val){
+        let totalval = '';
+        let nowvalue = oldval;
         if(val === 'delete'){
-            this.inputer = this.inputer.slice(0,this.inputer.length -1);
+            totalval = nowvalue.slice(0,nowvalue.length -1);
         }else{
-            this.inputer +=  ''+val;
+            totalval +=  nowvalue + val;
         }
-        console.log(this.inputer)
+        return totalval;
     }
     show(dom){
         let body = document.getElementsByTagName('body')[0];
@@ -110,8 +123,31 @@ class Keyboard {
     renderButton(){
 
     }
-}
 
+    mvvm(data,key,value){
+
+        Object.defineProperty(data, key, {
+            enumerable: true, // 可枚举
+            configurable: true, // 不能再define
+            get: e => {
+                // console.log('...........'+value)
+                return value;
+            },
+            set: newVal => {
+                // console.log('111111',value,newVal)
+                value = newVal;
+                this.updatedom();
+            }
+        });
+    }
+
+    updatedom(){
+        var dom = document.querySelector(".safekeyboardinputer");
+        dom.value = this.inputer.value;
+        dom.innerHTML = this.inputer.value;
+        // console.log('...........'+this.inputer.value)
+    }
+}
 
 
 var k = new Keyboard({
