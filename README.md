@@ -1,6 +1,51 @@
 # SafeKeyboard
 H5安全键盘
 
+# 目前功能
+
+## 应用场景
+- 页面单个输入框，自动聚焦
+- 
+
+
+## API
+
+- 基本demo
+
+```
+<div class="safekeyboardinputer myinputer" id="skeyinputer" placeholder="请您输入完整的手机号" max-length='11' autofocus="true" value='11' autosubmit="true" pattern=""></div>
+```
+
+参数 | value | 说明 
+---|--- |--- 
+class | safekeyboardinputer | 默认样式
+class | myinputer | 自定义样式接口
+id | skeyinputer | 功能控制
+type | number / identity / password | 不同功能样式
+placeholder | *** | 默认文案
+value | 123 | 默认值/展示
+max-length | 11 | 最大输入
+autosubmit | true | 搭配max-length使用，自动提交
+autofocus | true | 默认自动聚焦
+pattern | 正则 | 规则
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# 后期规划 
+
 ## 应用场景
 - 数字密码 (789465)
 - 银行卡 (6214 8301 8552 1452)

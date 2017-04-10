@@ -187,9 +187,9 @@ class Keyboard {
         let totalval = '';
         let nowvalue = oldval;
         let maxLength = this.getAttr(this.getInput(),'max-length');
-        let autofocus = false;
-        if(this.getAttr(this.getInput(),'autofocus') === 'true'){
-            autofocus = true;
+        let autofocus = true;
+        if(this.getAttr(this.getInput(),'autofocus') && this.getAttr(this.getInput(),'autofocus') !== 'true'){
+            autofocus = false;
         }
         if(val === 'delete'){
             totalval = nowvalue.slice(0,nowvalue.length -1);
