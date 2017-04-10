@@ -4,29 +4,122 @@
 }
 
 body {
-    background-color: #ccc;
+    background-color: #fff;
     h1 {
         font-size: 18px;
     }
     #keyboard {
         position: fixed;
-        bottom: 0;
+        -webkit-tap-highlight-color: transparent;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        user-select: none;
+        bottom: -50%;
         left: 0;
         width: 200%;
-        -webkit-transform: scale(.5, .5) translateX(-50%);
-        transform: scale(.5, .5) translateX(-50%);
+        background-color: #fff;
+        color: #000;
+        font-size: 56px;
+        font-family: 'HelveticaNeue-Light';
+        user-select: none;
+        -webkit-transform: scale(.5, .5) translate(-50%, 50%);
+        transform: scale(.5, .5) translate(-50%, 50%);
+        transition: bottom .5s;
+        -moz-transition: bottom .5s;
         ul {
             width: 100%;
             overflow: hidden;
-            li {
-                float: left;
-                list-style-type: none;
-                width: 32%;
-                text-align: center;
-                display: block;
-                height: 40px;
-                border: 1px solid;
+            .keyamountline {
+                display: flex;
+                li {
+                    display: inline-block;
+                    -webkit-flex: 1;
+                    flex: 1;
+                    text-align: center;
+                    height: 108px;
+                    line-height: 108px;
+                    border-top: 1px solid #eee;
+                    border-right: 1px solid #eee;
+                    span {
+                        display: block;
+                        height: 100%;
+                        width: 100%;
+                    }
+                    :active {
+                        background-color: #F0F0F0;
+                    }
+                }
+                #kholder10,
+                #kholder12 {
+                    background-color: #E5E7EB;
+                }
+                #keyboarddelete {
+                    text-indent: -9999rem;
+                    background: url(delete.svg) no-repeat center #E5E7EB;
+                    &:active {
+                        background: url(delete.svg) no-repeat center #F0F0F0;
+                    }
+                }
             }
         }
     }
+}
+
+.safekeyboardinputer {
+    color: #cacaca;
+    font-size: 16px;
+    padding: 0 12px;
+    &.active{
+        color: #000;
+    }
+
+    &.focus{
+        &.active {
+            &:after {
+                display: inline-block;
+            }
+            &:before {
+                display: none;
+            }
+        }
+        &:after,
+        &:before {
+            animation: .9s steps(1, start) 0s normal none infinite running blink;
+            -webkit-animation: .9s steps(1, start) 0s normal none infinite running blink;
+            color: #000;
+            content: '';
+            display: none;
+            height: 20px;
+            line-height: 20px;
+            width: 2px;
+            border-right: 1px solid #666;
+            vertical-align: middle;
+            margin-top: -4px;
+            margin-right: 3px;
+        }
+        &:before {
+            display: inline-block;
+        }
+        @keyframes blink {
+            0%,
+            100% {
+                border-right: 1px solid #666;
+            }
+            50% {
+                border-right: 1px solid transparent;
+            }
+        }
+
+    }
+}
+
+.myinputer {
+    border: 1px solid #ADADAD;
+    margin: 0 auto;
+    width: 200px;
+    height: 45px;
+    overflow: hidden;
+    line-height: 45px;
+    color: #cacaca;
+    margin-top: 20px;
 }

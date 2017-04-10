@@ -3,13 +3,21 @@
 
 <head>
     <title>test</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="x5-fullscreen" content="true">
     <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
     <link rel="stylesheet" type="text/css" href="SafeKeyboard.less">
 </head>
 
 <body>
-	<div class="safekeyboardinputer">xxx</div>
-    <script type="text/javascript" src="mod.js"></script>
+    <div class="safekeyboardinputer myinputer" id="skeyinputer" placeholder="请您输入完整的手机号" max-length='11' autofocus="true" value='11' autosubmit="true" pattern=""></div>
+    <div class="safekeyboardinputer myinputer" placeholder="请您输入完整的手机号" max-length='11' type='identity' autofocus="true" value='123' autosubmit="true" pattern=""></div>
+    <script type="text/javascript" src="libs/mod.js"></script>
+    <script type="text/javascript" src="libs/fastclick.js"></script>    
     <script type="text/javascript" src="index.js"></script>
 </body>
 

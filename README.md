@@ -20,10 +20,18 @@ H5安全键盘
 	- 键盘与文本关系
 
 ## API
-```
-属性：
-- type
-- rules
+
+### input 属性：
+- type 
+- placeholder
+- max-length
+- autofocus
+- value
+- pattern [todo]
+- autosubmit(max-length)
+
+
+方法属性:
 - callback
 
 
@@ -34,3 +42,10 @@ H5安全键盘
 - hide
 
 ```
+
+## 解决问题
+- 图片svg
+- meta梳理
+- fastclick
+- 禁止长按
+- 动画、缩放
