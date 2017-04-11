@@ -1,41 +1,80 @@
 # SafeKeyboard
 H5安全键盘
 
-# 目前功能
-
-## 应用场景
-- 页面单个输入框，自动聚焦
-- 
+# 应用场景
+- 页面中仅有一个输入的地方
+- 输入框在页面偏上部位，不被键盘覆盖
 
 
-## API
+# How To Use
 
-- 基本demo
+1. 资源引用
+
+- requier引用
+```
+require('SafeKeyboard.js');
 
 ```
-<div class="safekeyboardinputer myinputer" id="skeyinputer" placeholder="请您输入完整的手机号" max-length='11' autofocus="true" value='11' autosubmit="true" pattern=""></div>
+
+- 直接引用
+``` html    
+<script type="text/javascript" src="SafeKeyboard.js"></script>
 ```
 
-参数 | value | 说明 
----|--- |--- 
-class | safekeyboardinputer | 默认样式
-class | myinputer | 自定义样式接口
-id | skeyinputer | 功能控制
-type | number / identity / password | 不同功能样式
-placeholder | *** | 默认文案
-value | 123 | 默认值/展示
-max-length | 11 | 最大输入
-autosubmit | true | 搭配max-length使用，自动提交
-autofocus | true | 默认自动聚焦
-pattern | 正则 | 规则
+2. 页面中DOM
+
+```
+<div class="safekeyboardinputer myinputer" id="skeyinputer"></div>
+```
+3. 初始化引用
+```
+key.init();
+
+```
 
 
+4. Dom Attr 属性表
+
+参数 | value | 说明 | 是否必选
+---|--- |--- |--- |
+class | safekeyboardinputer | 默认样式 | √
+class | myinputer | 自定义样式接口 | ×
+id | skeyinputer | 功能控制 | √
+type | number / identity / password | 不同功能样式 | ×
+placeholder | *** | 默认文案 | × 
+value | 123 | 默认值/展示 | ×
+max-length | 11 | 最大输入 | ×
+autosubmit | true | 搭配max-length使用，自动提交 | ×
+autofocus | true | 默认自动聚焦 | ×
+pattern | 正则 | 规则 | ×
+
+5. 键盘功能接口
+ 
+参数 | 说明 
+---|--- 
+show |  键盘显示
+hide | 键盘隐藏
+getValue | 获取当前值
+rebind | 重新绑定
 
 
+# 实际问题思考
+- 单页应用，多个页面每个页面有一个输入框，键盘咋搞？？！！
+```
+键盘定位是个【单例应用】，一旦创建就不会再次创建，只做隐藏处理
+
+```
+
+- 页面没有输入框
+```
+只输出结果，不执行绑定input
+
+```
 
 
-
-
+# todo
+- 多个输入框
+- 键盘与文本流的覆盖关系
 
 
 

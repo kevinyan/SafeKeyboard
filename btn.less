@@ -1,0 +1,128 @@
+@btn-bg: #6492E3;
+@btn-bg-active: #5E89D5;
+@btn-bg-disabled: #CED4DE;
+@btn-font-size: 1.6rem;
+@btn-font-color: #fff;
+@btn-font-disabled-color: #fbffff;
+@btn-primary-bg: #fff;
+@btn-primary-bg-active: #e5e5e5;
+@btn-primary-font-color: #313131;
+@btn-primary-border-color: #ccc;
+@btn-danger-border-color: #e84641;
+@btn-danger-font-color: #e24e42;
+@btn-danger-bg-disabled: #fff;
+@btn-danger-disabled-border-color: #e5e5e5;
+@btn-danger-disabled-color: #313131;
+button,
+.btn,
+.button {
+    display: inline-block;
+    -webkit-appearance: none;
+    border: none;
+    background: @btn-bg;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    text-shadow: none;
+    // height: 44px;
+    height: 4.4rem;
+    line-height: 4.4rem;
+    font-size: @btn-font-size;
+    // font-weight: 700;
+    text-align: center;
+    color: @btn-font-color;
+    border-radius: 2px;
+    padding: 0 2.4rem;
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
+    // border: 1px solid #a40b09;
+    &:active {
+        background: @btn-bg-active;
+        color: @btn-font-color;
+    }
+    &.disabled,
+    &.disabled:active,
+    &.loading,
+    &.loading:active {
+        color: @btn-font-disabled-color;
+        background: @btn-bg-disabled;
+    }
+    &.loading {
+        font-size: 0rem;
+        color: @btn-bg-disabled !important;
+        &:after {
+            content: "加载中...";
+            font-size: @btn-font-size;
+            color: @btn-font-disabled-color;
+            margin-top: -5px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+    }
+    &.primary,
+    &.danger {
+        background: @btn-primary-bg;
+        color: @btn-primary-font-color;
+        border: 1px @btn-primary-border-color solid;
+        // 使用阴影制造border
+        // 避免给btn增加1像素
+        // box-shadow: 0 0 0 1px @btn-primary-border-color;
+        // -webkit-box-shadow: 0 0 0 1px @btn-primary-border-color;
+        &:not(.disabled):active {
+            background: @btn-primary-bg-active;
+        }
+    }
+    &.primary {
+        &.disabled,
+        &.disabled:active,
+        &.loading,
+        &.loading:active {
+            color: lighten(@btn-primary-font-color, 20%);
+            background: @btn-primary-bg;
+            border: 1px @btn-primary-border-color solid;
+            // box-shadow: 0 0 0 1px darken(@btn-danger-disabled-border-color, 20%);
+            // -webkit-box-shadow: 0 0 0 1px darken(@btn-danger-disabled-border-color, 20%);
+        }
+    }
+    &.danger {
+        color: @btn-danger-font-color;
+        border: 1px solid @btn-danger-border-color;
+        // box-shadow: 0 0 0 1px @btn-danger-border-color;
+        &.disabled,
+        &.disabled:active,
+        &.loading,
+        &.loading:active {
+            color: @btn-danger-disabled-color;
+            background: @btn-danger-bg-disabled;
+            border: 1px darken(@btn-danger-disabled-border-color, 20%) solid;
+            // box-shadow: 0 0 0 1px darken(@btn-danger-disabled-border-color, 20%);
+            // -webkit-box-shadow: 0 0 0 1px darken(@btn-danger-disabled-border-color, 20%);
+        }
+    }
+    &.full {
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    &.fixed {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+    }
+}
+
+//带logo的btn，通常是支付接口，安全支付
+.safe-logo {
+    &:before {
+        content: '';
+        display: inline-block;
+        height: 20px;
+        width: 20px;
+        background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACUAAAAsCAYAAADikXHLAAAAAXNSR0IArs4c6QAABQ5JREFUWAntmGuIVVUUx+eq2KRZkkVaMaNm+KAXYZNFaAWlFWkiRKiRkPQhoxAL/GAa9SEyLaKiL1FOhWkEoUmJGtqDNLTQD5YKvijLarJ0eozP2+9/7l7b7fE87yX80oLfXXvv9V9r7zn3nLP3naamBq1arY6CVfCH86MaLFl/OgtogcVwAkJTX+MtdVcneShMh0F5RdB0h3HwFvwNsqPwHFwM810fF8Wlk75HgdqD0D0Ewyt87CGh1SV9i18PO2E/VKAnDIYr4Dq4AGRV+ADmViqVrRqQUU+6p+EeUL6sAzaCdKp9BJQ/AFT7BhgBsr0qYnbIGjn+B+ILYHitRvIn8RGwEKQvYn5+XSmtWHYWaCJDX2cXHIRDsA90FbdxZSyHbrZRXldLNfUAXALnwnnQDLvhu4DDtJv8opjILrXGz4jZBep2RmbPmfT/ReVcIB8ufKX4vvUOegouh8T7j/EeMBqehW9Ab/k3obufsUCj8I1O4Vup94mr2YnfDr/DP3Ah9Ae9d/RUxW0az1F7fDDeZ47aU62GLC5I6iN7IxIX+/gT2Wp4Hq5Oqhcfs7L+5RkXJPVJ0jbzAmhrSbPlBCbB2Uk1ssasYKlFWUGS77QCgf+StraLus1qlV4UiTfDASuA18Y81VZCux8MhNxN2HLMkxNZqUWRMQQ6a6nR5y98Xh8UnUP/Rxc/iH8Jels8z7u8atlFbbBE/D64LD4RY93gSbBz1g7aw+K6pD66yAovCvWYWor/nJBU2MZQzfDKanUT7dx3lenLLGqRJeFX2OTy9PuAjjO9bJy2rthGMHvUYmnehGUWtcWS8JOtMO1e8LmL6ayuI1BktB9z43IbbDzNm7bMonTjml2rwnS0rayxQec/xEfbEP6WIHYgbTE2blrtfUc1yEAfC6b4cL/TIU12HH6LWic/OoJDoI7SZtKmGvPbMbtLi9K5XJb34tPJ0yy6Um7yKQwuc4El+AdNhI90rh/mBxLfvM21vtKiNrvOTT6c3Pg0GJ7KXxa9HFnYMcbvhcfhfvonpCOuq6QFm4X5Nhb6ca6zTsn3gWxdqIi3iY+RKLA5cU3YR/dMoFUz9ZsgptPKfomwtuheotEFetnZz5ywvm8Tj9/UrzHmXwMS0j8HXofQPvJFEhoI73DiHT7MQLsbbPeDCQ00rfCr05rTQU5HlJdBiw6fUrrRFdCvmFRDs1ZC7OTVp3NlNFQ7kmT+3EY3En5y+jynreia1NUQIN7mimiTt6e6lsLAey6oJyjT0F0KS5w+yelWeAcGZBYiiGaZKzD7NC2BFrD/D4RPzWlaG0CvU8MTsAhWOD8LP9g0WR7dJJDpyp9yb/o8Ag9Lgek+afWB/6BB/X7wM8hmZE6BwL6WL2g3Z4obCFL7XZB9BtknCATa8beDTN936RNk3lqpqa9cpkNi5pPpayHU02j/BXmbdrjveV09DWrpZa0HQdxeqgYJN0InyF6FhhdGDZ0aDoNsXqkFmZjE0aDfb7Kl4M9Kpinqyb0b/gLZgqJ5iToK6K+zK6bD3PmJwoxBcvRvw2MgezFDWjxEoatgrypiu0D/Zsw1dD1hIZjNz00qI6DqRbDeVT+Cn5mVT3wofO302vAfyNLXHaNwM7ziJpJbCafslfR1RJ4Jdv98T7ut7kmLJjLJeOgAme63WTAQJsJWMNPpo2/Rug3rmKw/vG+zx/xO+nc1PEm9BZh8LCwGLeRjeATqfnVoHf8C9yQMDph4zLMAAAAASUVORK5CYII=');
+        background-repeat: no-repeat;
+        background-size: contain;
+        vertical-align: middle;
+        margin-top: -2px;
+        margin-right: 5px;
+    }
+}

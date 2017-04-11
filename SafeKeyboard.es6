@@ -67,13 +67,14 @@ class Keyboard {
         this.keyamount = 12;
         this.keyamountperline = 3;
         this.inputer = {'value':''};
-        if(this.getAttr(this.getInput(),'value') ){
-           this.inputer = {'value':this.getAttr(this.getInput(),'value')};
-        }
+        this.type ='';
+        this.maxLength = 999;
+        this.autosubmit = false;
+
+        this.checkInputAttr();
+        
         this.mvvm(this.inputer,'value',this.inputer.value);
-        if(this.inputer.value){
-            this.getInput().innerHTML = this.inputer.value;
-        }
+        
         
         this.showMap=[
             {'value':1,'facevalue':1,'showindex':1},
@@ -89,7 +90,7 @@ class Keyboard {
             {'value':'delete','facevalue':'delete','showindex':12}
         ]
 
-        this.type =this.getAttr(this.getInput(),'type');
+        
 
         if(this.type){
             if(this.type == 'identity'){
@@ -105,10 +106,29 @@ class Keyboard {
             }
         }
     }
-    create(){
-    
+    checkInputAttr(){
+        if(this.checkInputExist()){
+            if(this.getAttr(this.getInput(),'value') ){
+               this.inputer = {'value':this.getAttr(this.getInput(),'value')};
+            }
+            if(this.getAttr(this.getInput(),'autosubmit') && this.getAttr(this.getInput(),'autosubmit') !== 'true'){
+                this.autosubmit = true;
+            }
+            this.getInput().innerHTML = this.inputer.value || '';
+            this.type =this.getAttr(this.getInput(),'type') || '';
+            this.maxLength = this.getAttr(this.getInput(),'max-length') || 999;
+        }
+    }
 
-        this.dealplaceholder();
+    checkInputExist(){
+        if(document.getElementById('skeyinputer')){
+            return true
+        }else{
+            return false
+        }
+    }
+    create(){
+
 
         
         //create  keyboard
@@ -130,9 +150,17 @@ class Keyboard {
         html.push('</ul>');
         dom.innerHTML = html.join('');
     
+        // ceatedom
+        this.getDom('body').appendChild(dom);
 
-        // 是否 show
-        this.show(dom)
+
+        this.bindinpudom();
+        
+        // else{
+        //     this.getInput().addEventListener('click',() =>{
+        //         this.show();
+        //     },false)
+        // }
 
 
         // render keyboard button
@@ -141,7 +169,6 @@ class Keyboard {
             let btndom = btn.create(v);
             let domholder = this.getDom('#kholder' + v.showindex)
             domholder.innerHTML = btndom;
-
         })
 
 
@@ -164,6 +191,20 @@ class Keyboard {
         })
 
     }
+    bindinpudom(){
+        if(this.checkInputExist()){
+            
+            // 是否 show
+            this.getInput().addEventListener('click',() =>{
+                this.show();
+            },false)
+            // 自动聚焦功能
+            if(this.getAttr(this.getInput(),'autofocus') === 'true'){
+               this.show()
+            }
+            
+        }
+    }
     renderKey(val){
         let keybtn = new KeyboardButton();
         return keybtn.create(val,this.params);        
@@ -174,6 +215,7 @@ class Keyboard {
     }
     getInput(){
         return this.getDom('#skeyinputer')
+        
     }
 
     getAttr(dom,key){
@@ -185,21 +227,16 @@ class Keyboard {
 
     calculate(oldval,val){
         let totalval = '';
-        let nowvalue = oldval;
-        let maxLength = this.getAttr(this.getInput(),'max-length');
-        let autofocus = true;
-        if(this.getAttr(this.getInput(),'autofocus') && this.getAttr(this.getInput(),'autofocus') !== 'true'){
-            autofocus = false;
-        }
+        let nowvalue = oldval;        
+       
         if(val === 'delete'){
             totalval = nowvalue.slice(0,nowvalue.length -1);
         }else{
-            if(nowvalue.length < parseInt(maxLength,10)){
+            if(nowvalue.length < parseInt(this.maxLength,10)){
                 totalval =  nowvalue + val;
-                if(totalval.length === parseInt(maxLength,10) && autofocus){
+                if(totalval.length === parseInt(this.maxLength,10) && this.autosubmit){
                     setTimeout(()=>{
-                        this.params.callback();
-                        
+                        this.callback();
                     },300);
                 }
             }else{
@@ -210,23 +247,29 @@ class Keyboard {
 
         return totalval;
     }
-    show(dom){
-        this.getDom('body').appendChild(dom);
-
-        if(this.getAttr(this.getInput(),'autofocus') === 'true'){
-            setTimeout(()=>{
+    show(){
+        let dom = this.getDom('#keyboard');
+        setTimeout(()=>{
                 dom.style.bottom = 0;
-                this.getInput().classList.add('focus')
-                this.getInput().classList.add('active')
-            },100)
-        }else{
-            this.getInput().addEventListener('click',() =>{
-                 dom.style.bottom = 0;
-            },false)
-        }
+                if(this.checkInputExist()){
+                    // 处理placeholder
+                    this.dealplaceholder();
+                    this.getInput().classList.add('focus')
+                    if(this.getInput.value){
+                        this.getInput().classList.add('active')
+                    }
+                }
+        },100)
+
     }
     hide(){
-
+        let dom = this.getDom('#keyboard');
+        setTimeout(()=>{
+                dom.style.bottom = '-50%';
+                if(this.checkInputExist()){
+                   this.getInput().classList.remove('focus')
+                }
+        },100)
     }
     renderButton(){
 
@@ -242,9 +285,13 @@ class Keyboard {
                 return value;
             },
             set: newVal => {
-                // console.log('111111',value,newVal)
+                // console.log('...........'+value)
                 value = newVal;
-                this.updatedom();
+                if(this.checkInputExist()){
+                    this.updatedom();
+                }else{
+                    document.getElementById('inputa').innerHTML = value
+                }
             }
         });
     }
@@ -269,28 +316,32 @@ class Keyboard {
             inp.classList.add('active');
         }
     }
+    callback(){
+       console.log('i am callback');
+    }
+    getValue(){
+        alert(this.inputer.value);
+    }
+
+    rebind(){
+        this.checkInputAttr();
+        this.bindinpudom();
+        this.mvvm(this.inputer,'value',this.inputer.value);
+    }
+
 }
 
 
-var k = new Keyboard({
-    callback: ()=>{
-        alert('success');
-    }
-})
-k.create();
+let key = new Keyboard();
 
+if (typeof define === 'function' && typeof define.amd === 'object' && define.amd) {
+    // AMD. Register as an anonymous module.
+    define(function() {
+        return key;
+    });
+} else if (typeof module !== 'undefined' && module.exports) {
+    module.exports = key;
+} else {
+    window.Keyboard = key;
+}
 
-
-
-
-
-// import Pubsub from './pubsub.es6'
-// let pubsub = new Pubsub();
-// pubsub.on('A',function(data){
-//  console.log(data)
-// })
-// pubsub.emit('A','百付宝')
-// 
-// var k = new Keyboard({
-//     type:'number'
-// })
