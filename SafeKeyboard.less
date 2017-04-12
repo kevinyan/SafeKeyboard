@@ -14,7 +14,7 @@ body {
         -webkit-touch-callout: none;
         -webkit-user-select: none;
         user-select: none;
-        bottom: -50%;
+        bottom: 0;
         left: 0;
         width: 200%;
         background-color: #fff;
@@ -22,18 +22,23 @@ body {
         font-size: 56px;
         font-family: 'HelveticaNeue-Light';
         user-select: none;
-        -webkit-transform: scale(.5, .5) translate(-50%, 50%);
-        transform: scale(.5, .5) translate(-50%, 50%);
-        transition: bottom .5s;
-        -moz-transition: bottom .5s;
+        // 开启GPU加速
+        -webkit-transform: scale(.5, .5) translate3d(-50%, 150%, 0);
+        transform: scale(.5, .5) translate3d(-50%, 150%, 0);
+        transition: transform .3s;
+        -webkit-transition: -webkit-transform .3s;
         ul {
             width: 100%;
             overflow: hidden;
             .keyamountline {
+                display: -webkit-box;
+                display: -webkit-flex;
                 display: flex;
                 li {
-                    display: inline-block;
+                    display: block;
+                    -webkit-box-flex: 1;
                     -webkit-flex: 1;
+                    box-flex: 1;
                     flex: 1;
                     text-align: center;
                     height: 108px;
@@ -51,6 +56,7 @@ body {
                 }
                 #kholder10,
                 #kholder12 {
+                    min-width: 35px;
                     background-color: #E5E7EB;
                 }
                 #keyboarddelete {
@@ -65,15 +71,34 @@ body {
     }
 }
 
+@-webkit-keyframes blink {
+    0%,
+    100% {
+        opacity: 1
+    }
+    50% {
+        opacity: 0
+    }
+}
+
+@keyframes blink {
+    0%,
+    100% {
+        opacity: 1
+    }
+    50% {
+        opacity: 0
+    }
+}
+
 .safekeyboardinputer {
     color: #cacaca;
     font-size: 16px;
     padding: 0 12px;
-    &.active{
+    &.active {
         color: #000;
     }
-
-    &.focus{
+    &.focus {
         &.active {
             &:after {
                 display: inline-block;
@@ -84,8 +109,8 @@ body {
         }
         &:after,
         &:before {
-            animation: .9s steps(1, start) 0s normal none infinite running blink;
-            -webkit-animation: .9s steps(1, start) 0s normal none infinite running blink;
+            animation: blink 1s infinite linear;
+            -webkit-animation: blink 1s infinite linear;
             color: #000;
             content: '';
             display: none;
@@ -100,16 +125,6 @@ body {
         &:before {
             display: inline-block;
         }
-        @keyframes blink {
-            0%,
-            100% {
-                border-right: 1px solid #666;
-            }
-            50% {
-                border-right: 1px solid transparent;
-            }
-        }
-
     }
 }
 
@@ -124,12 +139,33 @@ body {
     margin-top: 20px;
 }
 
-
 @import url(btn.less);
-.button.full{
+.button.full {
     width: 80%;
     margin: 20px auto;
     font-size: 18px;
-    height: 50px;
-    line-height: 50px;
+    height: 40px;
+    line-height: 40px;
+}
+
+
+#test{
+
+     animation: blink 1s infinite linear;
+            -webkit-animation: blink 1s infinite linear;
+
+    &:before {
+           
+            color: #000;
+            content: '';
+            display: inline-block;
+            height: 20px;
+            line-height: 20px;
+            width: 5px;
+            border: 1px solid #666;
+            vertical-align: middle;
+            margin-top: -4px;
+            margin-right: 3px;
+        }
+      
 }

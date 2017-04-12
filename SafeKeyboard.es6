@@ -250,7 +250,10 @@ class Keyboard {
     show(){
         let dom = this.getDom('#keyboard');
         setTimeout(()=>{
-                dom.style.bottom = 0;
+                // dom.style.bottom = 0;
+                dom.style.webkitTransform=  'scale(.5, .5) translate3d(-50%, 50%,0)';
+                dom.style.transform= 'scale(.5, .5) translate3d(-50%, 50%,0)';
+                
                 if(this.checkInputExist()){
                     // 处理placeholder
                     this.dealplaceholder();
@@ -265,7 +268,9 @@ class Keyboard {
     hide(){
         let dom = this.getDom('#keyboard');
         setTimeout(()=>{
-                dom.style.bottom = '-50%';
+                // dom.style.bottom = '-50%';
+                dom.style.webkitTransform = 'scale(.5, .5) translate3d(-50%, 150%,0)';
+                dom.style.transform= 'scale(.5, .5) translate3d(-50%, 150%,0)';
                 if(this.checkInputExist()){
                    this.getInput().classList.remove('focus')
                 }
