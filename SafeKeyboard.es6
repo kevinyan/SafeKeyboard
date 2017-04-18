@@ -337,6 +337,15 @@ class Keyboard {
 }
 
 
+let inputs = document.querySelectorAll('input');
+inputs.forEach((ele,idx)=>{
+    ele.addEventListener('focus',()=>{
+        console.log(ele.getBoundingClientRect())
+    })
+})
+
+
+
 let key = new Keyboard();
 
 if (typeof define === 'function' && typeof define.amd === 'object' && define.amd) {

@@ -1,0 +1,7 @@
+language: js
+js:
+  - "6"
+  - "6.1"
+  - "5.11"
+services:
+  - mongodb

@@ -1,3 +1,4 @@
+// document.getElementById('inputa').innerHTML += '<div class="safekeyboardinputer myinputer" id="skeyinputer" placeholder="请您输入完整的手机号" max-length="11" autofocus="true" value="11" autosubmit="true" pattern=""></div>'
 
 var key = require('SafeKeyboard.es6');
 key.create()
@@ -19,7 +20,8 @@ document.getElementById('callv').addEventListener('click',function(){
 document.getElementById('createv').addEventListener('click',function(){
 	key.hide();
 	key.show();
-	document.getElementById('inputa').innerHTML = '<div class="safekeyboardinputer myinputer" id="skeyinputer" placeholder="请您输入完整的手机号" max-length="11" autofocus="true" value="11" autosubmit="true" pattern=""></div>'
 	key.rebind();
 })
+
+
 
