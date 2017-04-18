@@ -1,7 +1,4 @@
-language: js
-js:
-  - "6"
-  - "6.1"
-  - "5.11"
-services:
-  - mongodb
+language: node_js
+node_js:
+  - "iojs"
+  - "7"
