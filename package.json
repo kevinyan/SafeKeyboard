@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/kevinyan/SafeKeyboard/issues"
   },
-  "homepage": "https://github.com/kevinyan/SafeKeyboard#readme"
+  "homepage": "https://github.com/kevinyan/SafeKeyboard#readme",
+  "devDependencies": {
+    "babel-plugin-transform-object-assign": "^6.22.0"
+  }
 }

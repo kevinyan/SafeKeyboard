@@ -25,6 +25,7 @@ body #keyboard {
   transform: scale(0.5, 0.5) translate3d(-50%, 150%, 0);
   transition: transform .3s;
   -webkit-transition: -webkit-transform 0.3s;
+  z-index: 130;
 }
 body #keyboard ul {
   width: 100%;

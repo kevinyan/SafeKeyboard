@@ -2,8 +2,6 @@ define('SafeKeyboard.es6', function(require, exports, module) {
 
   'use strict';
   
-  var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-  
   var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
   
   function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -34,7 +32,7 @@ define('SafeKeyboard.es6', function(require, exports, module) {
       lastTouchEnd = now;
   }, false);
   
-  //fastclick
+  // fastclick
   if (window.FastClick) {
       if ('addEventListener' in document) {
           document.addEventListener('DOMContentLoaded', function () {
@@ -42,6 +40,9 @@ define('SafeKeyboard.es6', function(require, exports, module) {
           }, false);
       }
   }
+  
+  var event = document.createEvent('Event');
+  event.initEvent('build', true, true);
   
   // 按钮类
   
@@ -56,19 +57,20 @@ define('SafeKeyboard.es6', function(require, exports, module) {
           key: 'create',
           value: function create(v) {
               var temp = this.checktype(v);
+              if (temp.show) {
+                  return '<span id="keyboard' + temp.value + '" value="' + temp.value + '" data-index="' + temp.showindex + '">' + temp.facevalue + '</span>';
+              }
   
-              return '<span id="keyboard' + temp.value + '" value="' + temp.value + '" data-index="' + temp.showindex + '">' + temp.facevalue + '</span>';
+              return '';
           }
       }, {
           key: 'checktype',
           value: function checktype(v) {
-  
               var param = {};
-  
               param.value = v.value;
               param.facevalue = v.facevalue;
               param.showindex = v.showindex;
-  
+              param.show = v.show;
               return param;
           }
       }]);
@@ -91,31 +93,17 @@ define('SafeKeyboard.es6', function(require, exports, module) {
           this.maxLength = 999;
           this.autosubmit = false;
   
+          this.showMap = [{ 'value': 1, 'facevalue': 1, 'showindex': 1, 'show': true }, { 'value': 2, 'facevalue': 2, 'showindex': 2, 'show': true }, { 'value': 3, 'facevalue': 3, 'showindex': 3, 'show': true }, { 'value': 4, 'facevalue': 4, 'showindex': 4, 'show': true }, { 'value': 5, 'facevalue': 5, 'showindex': 5, 'show': true }, { 'value': 6, 'facevalue': 6, 'showindex': 6, 'show': true }, { 'value': 7, 'facevalue': 7, 'showindex': 7, 'show': true }, { 'value': 8, 'facevalue': 8, 'showindex': 8, 'show': true }, { 'value': 9, 'facevalue': 9, 'showindex': 9, 'show': true }, { 'value': 'X', 'facevalue': 'X', 'showindex': 10, 'show': false }, { 'value': 0, 'facevalue': 0, 'showindex': 11, 'show': true }, { 'value': 'delete', 'facevalue': 'delete', 'showindex': 12, 'show': true }];
+  
           this.checkInputAttr();
-  
           this.mvvm(this.inputer, 'value', this.inputer.value);
-  
-          this.showMap = [{ 'value': 1, 'facevalue': 1, 'showindex': 1 }, { 'value': 2, 'facevalue': 2, 'showindex': 2 }, { 'value': 3, 'facevalue': 3, 'showindex': 3 }, { 'value': 4, 'facevalue': 4, 'showindex': 4 }, { 'value': 5, 'facevalue': 5, 'showindex': 5 }, { 'value': 6, 'facevalue': 6, 'showindex': 6 }, { 'value': 7, 'facevalue': 7, 'showindex': 7 }, { 'value': 8, 'facevalue': 8, 'showindex': 8 }, { 'value': 9, 'facevalue': 9, 'showindex': 9 }, { 'value': 0, 'facevalue': 0, 'showindex': 11 }, { 'value': 'delete', 'facevalue': 'delete', 'showindex': 12 }];
-  
-          if (this.type) {
-              if (this.type == 'identity') {
-                  var tempArr = [];
-                  this.showMap.forEach(function (ele, idx) {
-                      tempArr.push(ele);
-                      if (idx == 8) {
-                          tempArr.push({ 'value': 'X', 'facevalue': 'X', 'showindex': 10 });
-                      }
-                  });
-  
-                  this.showMap = tempArr;
-              }
-          }
       }
   
       _createClass(Keyboard, [{
           key: 'checkInputAttr',
           value: function checkInputAttr() {
               if (this.checkInputExist()) {
+                  this.inputer.value = '';
                   if (this.getAttr(this.getInput(), 'value')) {
                       this.inputer = { 'value': this.getAttr(this.getInput(), 'value') };
                   }
@@ -125,6 +113,30 @@ define('SafeKeyboard.es6', function(require, exports, module) {
                   this.getInput().innerHTML = this.inputer.value || '';
                   this.type = this.getAttr(this.getInput(), 'type') || '';
                   this.maxLength = this.getAttr(this.getInput(), 'max-length') || 999;
+  
+                  if (this.type && this.type == 'identity') {
+                      this.showMap.forEach(function (ele, idx) {
+                          if (ele.value == 'X') {
+                              ele.show = true;
+                          }
+                      });
+                  } else {
+                      this.showMap.forEach(function (ele, idx) {
+                          if (ele.value == 'X') {
+                              ele.show = false;
+                          }
+                      });
+                  }
+              } else {
+                  this.type = '';
+                  this.inputer = { 'value': '' };
+                  this.autosubmit = false;
+                  this.maxLength = 999;
+                  this.showMap.forEach(function (ele, idx) {
+                      if (ele.value == 'X') {
+                          ele.show = false;
+                      }
+                  });
               }
           }
       }, {
@@ -139,7 +151,31 @@ define('SafeKeyboard.es6', function(require, exports, module) {
       }, {
           key: 'create',
           value: function create() {
-              var _this = this;
+              // if(this.type &&　this.type == 'identity'){
+              //     var tempArr = []
+              //     this.showMap.forEach((ele,idx)=>{
+              //         tempArr.push(ele)
+              //         if(idx == 8){
+              //             tempArr.push({'value':'X','facevalue':'X','showindex':10},)
+              //         }
+              //     })
+              //     this.showMap = tempArr;
+              // }else{
+              //     this.showMap =[
+              //         {'value':1,'facevalue':1,'showindex':1},
+              //         {'value':2,'facevalue':2,'showindex':2},
+              //         {'value':3,'facevalue':3,'showindex':3},
+              //         {'value':4,'facevalue':4,'showindex':4},
+              //         {'value':5,'facevalue':5,'showindex':5},
+              //         {'value':6,'facevalue':6,'showindex':6},
+              //         {'value':7,'facevalue':7,'showindex':7},
+              //         {'value':8,'facevalue':8,'showindex':8},
+              //         {'value':9,'facevalue':9,'showindex':9},
+              //         {'value':0,'facevalue':0,'showindex':11},
+              //         {'value':'delete','facevalue':'delete','showindex':12}
+              //     ]
+              // }
+  
   
               //create  keyboard
               var dom = document.createElement("div");
@@ -165,14 +201,14 @@ define('SafeKeyboard.es6', function(require, exports, module) {
   
               this.bindinpudom();
   
-              // else{
-              //     this.getInput().addEventListener('click',() =>{
-              //         this.show();
-              //     },false)
-              // }
-  
-  
               // render keyboard button
+              this.renderButton();
+          }
+      }, {
+          key: 'renderButton',
+          value: function renderButton() {
+              var _this = this;
+  
               this.showMap.forEach(function (v) {
                   var btn = new KeyboardButton();
                   var btndom = btn.create(v);
@@ -189,13 +225,17 @@ define('SafeKeyboard.es6', function(require, exports, module) {
                       }, false);
   
                       domk.addEventListener('touchend', function (e) {
-  
                           var k = _this.calculate(_this.inputer.value, v.value);
                           _this.inputer['value'] = k;
-                          _this.mvvm(_this.inputer, 'value', k);
-                      }, false);
+                          // this.mvvm(this.inputer,'value',k);
+                      });
                   }
               });
+          }
+      }, {
+          key: 'destory',
+          value: function destory() {
+              document.getElementById('keyboard').parentNode.removeChild(document.getElementById('keyboard'));
           }
       }, {
           key: 'bindinpudom',
@@ -212,6 +252,15 @@ define('SafeKeyboard.es6', function(require, exports, module) {
                   if (this.getAttr(this.getInput(), 'autofocus') === 'true') {
                       this.show();
                   }
+              }
+          }
+      }, {
+          key: 'offbinddom',
+          value: function offbinddom() {
+              if (this.checkInputExist()) {
+                  this.getInput().removeEventListener('click', function () {
+                      console.log('remove');
+                  });
               }
           }
       }, {
@@ -302,9 +351,6 @@ define('SafeKeyboard.es6', function(require, exports, module) {
               }, 100);
           }
       }, {
-          key: 'renderButton',
-          value: function renderButton() {}
-      }, {
           key: 'mvvm',
           value: function mvvm(data, key, value) {
               var _this6 = this;
@@ -317,13 +363,9 @@ define('SafeKeyboard.es6', function(require, exports, module) {
                       return value;
                   },
                   set: function set(newVal) {
-                      // console.log('...........'+value)
                       value = newVal;
-                      if (_this6.checkInputExist()) {
-                          _this6.updatedom();
-                      } else {
-                          document.getElementById('inputa').innerHTML = value;
-                      }
+                      // console.log('~~~~~~~~~'+value)
+                      _this6.updatedom();
                   }
               });
           }
@@ -331,9 +373,15 @@ define('SafeKeyboard.es6', function(require, exports, module) {
           key: 'updatedom',
           value: function updatedom() {
               var dom = this.getInput();
-              dom.value = this.inputer.value;
-              dom.innerHTML = this.inputer.value;
-              this.dealplaceholder();
+              if (dom) {
+                  dom.value = this.inputer.value;
+                  dom.innerHTML = this.inputer.value;
+                  this.dealplaceholder();
+              } else {
+                  // this.dispatchEvent({type:'ck', message:this.inputer.value});
+                  event.inputer = this.inputer.value;
+                  document.dispatchEvent(event);
+              }
           }
       }, {
           key: 'dealplaceholder',
@@ -357,38 +405,64 @@ define('SafeKeyboard.es6', function(require, exports, module) {
       }, {
           key: 'getValue',
           value: function getValue() {
-              alert(this.inputer.value);
+              return this.inputer.value;
+          }
+      }, {
+          key: 'clearValue',
+          value: function clearValue() {
+              this.inputer.value = '';
           }
       }, {
           key: 'rebind',
-          value: function rebind() {
-              this.checkInputAttr();
-              this.bindinpudom();
-              this.mvvm(this.inputer, 'value', this.inputer.value);
+          value: function rebind(time) {
+              var _this7 = this;
+  
+              var time = time || 0;
+              setTimeout(function () {
+                  _this7.checkInputAttr();
+                  _this7.renderButton();
+                  _this7.offbinddom();
+                  _this7.bindinpudom();
+                  _this7.mvvm(_this7.inputer, 'value', _this7.inputer.value);
+              }, time);
           }
       }]);
   
       return Keyboard;
   }();
   
-  var inputs = document.querySelectorAll('input');
-  inputs.forEach(function (ele, idx) {
-      ele.addEventListener('focus', function () {
-          console.log(ele.getBoundingClientRect());
-      });
-  });
+  // let inputs = document.querySelectorAll('input');
+  // inputs.forEach((ele,idx)=>{
+  //     ele.addEventListener('focus',()=>{
+  //         console.log(ele.getBoundingClientRect())
+  //     })
+  // })
   
-  var key = new Keyboard();
   
-  if (typeof define === 'function' && _typeof(define.amd) === 'object' && define.amd) {
-      // AMD. Register as an anonymous module.
-      define(function () {
+  // Object.assign( Keyboard.prototype, EventDispatcher.prototype );
+  
+  var key;
+  
+  var getKeyboard = function getKeyboard() {
+      if (key) {
           return key;
-      });
-  } else if (typeof module !== 'undefined' && module.exports) {
-      module.exports = key;
-  } else {
-      window.Keyboard = key;
-  }
+      } else {
+          key = new Keyboard();
+          key.create();
+          return key;
+      }
+  };
+  module.exports = getKeyboard;
+  
+  // if (typeof define === 'function' && typeof define.amd === 'object' && define.amd) {
+  //     // AMD. Register as an anonymous module.
+  //     define(function() {
+  //         return key;
+  //     });
+  // } else if (typeof module !== 'undefined' && module.exports) {
+  //     module.exports = key;
+  // } else {
+  //     window.Keyboard = key;
+  // }
 
 });

@@ -25,7 +25,7 @@ document.documentElement.addEventListener('touchend', function (event) {
   lastTouchEnd = now;
 }, false);
 
-//fastclick
+// fastclick
 if(window.FastClick){
     if ('addEventListener' in document) {
         document.addEventListener('DOMContentLoaded', function() {
@@ -34,6 +34,10 @@ if(window.FastClick){
     }
 }
 
+var event = document.createEvent('Event');
+event.initEvent('build', true, true);
+
+
 // 按钮类
 class KeyboardButton {
     constructor(){
@@ -41,17 +45,18 @@ class KeyboardButton {
     }
     create(v){
         let temp = this.checktype(v);
+        if(temp.show){
+            return '<span id="keyboard'+ temp.value +'" value="'+ temp.value +'" data-index="' + temp.showindex + '">'+ temp.facevalue +'</span>';
+        }
 
-        return '<span id="keyboard'+ temp.value +'" value="'+ temp.value +'" data-index="' + temp.showindex + '">'+ temp.facevalue +'</span>';
+        return '';
     }
     checktype(v){
-
         let param ={};
-
         param.value = v.value;
         param.facevalue = v.facevalue;
         param.showindex = v.showindex;
-
+        param.show = v.show;
         return param;
     }
 }
@@ -71,43 +76,34 @@ class Keyboard {
         this.maxLength = 999;
         this.autosubmit = false;
 
-        this.checkInputAttr();
         
+        this.showMap =[
+                {'value':1,'facevalue':1,'showindex':1,'show':true},
+                {'value':2,'facevalue':2,'showindex':2,'show':true},
+                {'value':3,'facevalue':3,'showindex':3,'show':true},
+                {'value':4,'facevalue':4,'showindex':4,'show':true},
+                {'value':5,'facevalue':5,'showindex':5,'show':true},
+                {'value':6,'facevalue':6,'showindex':6,'show':true},
+                {'value':7,'facevalue':7,'showindex':7,'show':true},
+                {'value':8,'facevalue':8,'showindex':8,'show':true},
+                {'value':9,'facevalue':9,'showindex':9,'show':true},
+                {'value':'X','facevalue':'X','showindex':10,'show':false},
+                {'value':0,'facevalue':0,'showindex':11,'show':true},
+                {'value':'delete','facevalue':'delete','showindex':12,'show':true}
+        ];
+
+
+        
+        this.checkInputAttr();
         this.mvvm(this.inputer,'value',this.inputer.value);
         
-        
-        this.showMap=[
-            {'value':1,'facevalue':1,'showindex':1},
-            {'value':2,'facevalue':2,'showindex':2},
-            {'value':3,'facevalue':3,'showindex':3},
-            {'value':4,'facevalue':4,'showindex':4},
-            {'value':5,'facevalue':5,'showindex':5},
-            {'value':6,'facevalue':6,'showindex':6},
-            {'value':7,'facevalue':7,'showindex':7},
-            {'value':8,'facevalue':8,'showindex':8},
-            {'value':9,'facevalue':9,'showindex':9},
-            {'value':0,'facevalue':0,'showindex':11},
-            {'value':'delete','facevalue':'delete','showindex':12}
-        ]
+
 
         
-
-        if(this.type){
-            if(this.type == 'identity'){
-                var tempArr = []
-                this.showMap.forEach((ele,idx)=>{
-                    tempArr.push(ele)
-                    if(idx == 8){
-                        tempArr.push({'value':'X','facevalue':'X','showindex':10},)
-                    }
-                })
-
-                this.showMap = tempArr;
-            }
-        }
     }
     checkInputAttr(){
         if(this.checkInputExist()){
+            this.inputer.value = '';
             if(this.getAttr(this.getInput(),'value') ){
                this.inputer = {'value':this.getAttr(this.getInput(),'value')};
             }
@@ -117,6 +113,37 @@ class Keyboard {
             this.getInput().innerHTML = this.inputer.value || '';
             this.type =this.getAttr(this.getInput(),'type') || '';
             this.maxLength = this.getAttr(this.getInput(),'max-length') || 999;
+
+            if(this.type && this.type == 'identity'){
+                this.showMap.forEach((ele,idx)=>{
+                    if(ele.value == 'X'){
+                        ele.show = true;
+                    }
+                })
+            }else{
+                this.showMap.forEach((ele,idx)=>{
+                    if(ele.value == 'X'){
+                        ele.show = false;
+                    }
+                })
+            }
+            
+        }else{
+            if(document.querySelector('.myinput')){
+                this.type = '';
+                this.inputer = {'value':''};
+                this.autosubmit = false;
+                this.maxLength = 999;
+                this.showMap.forEach((ele,idx)=>{
+                    if(ele.value == 'X'){
+                        ele.show = false;
+                    }
+                })
+            }else{
+                if(this.getDom('#keyboard')){
+                    this.hide();
+                }
+            }
         }
     }
 
@@ -129,8 +156,6 @@ class Keyboard {
     }
     create(){
 
-
-        
         //create  keyboard
         let dom = document.createElement("div");
         dom.id = 'keyboard';
@@ -150,20 +175,23 @@ class Keyboard {
         html.push('</ul>');
         dom.innerHTML = html.join('');
     
-        // ceatedom
+        // ceateKeyboarddom
         this.getDom('body').appendChild(dom);
 
 
+        // 给input绑定事件
         this.bindinpudom();
-        
-        // else{
-        //     this.getInput().addEventListener('click',() =>{
-        //         this.show();
-        //     },false)
-        // }
-
+    
 
         // render keyboard button
+        this.renderButton();
+
+
+        
+
+    }
+
+    renderButton(){
         this.showMap.forEach(v => {
             let btn = new KeyboardButton();
             let btndom = btn.create(v);
@@ -181,16 +209,19 @@ class Keyboard {
                 }, false);
 
                 domk.addEventListener('touchend' ,e => {
-
                    var k = this.calculate(this.inputer.value , v.value);
                    this.inputer['value'] = k;
-                   this.mvvm(this.inputer,'value',k);
+                   // this.mvvm(this.inputer,'value',k);
                 
-                },false)
+                })
             }
         })
-
     }
+
+    destory(){
+        document.getElementById('keyboard').parentNode.removeChild(document.getElementById('keyboard'))
+    }
+
     bindinpudom(){
         if(this.checkInputExist()){
             
@@ -203,6 +234,13 @@ class Keyboard {
                this.show()
             }
             
+        }
+    }
+    offbinddom(){
+         if(this.checkInputExist()){ 
+            this.getInput().removeEventListener('click',()=>{
+                console.log('remove')
+            })           
         }
     }
     renderKey(val){
@@ -267,21 +305,20 @@ class Keyboard {
     }
     hide(){
         let dom = this.getDom('#keyboard');
-        setTimeout(()=>{
-                // dom.style.bottom = '-50%';
-                dom.style.webkitTransform = 'scale(.5, .5) translate3d(-50%, 150%,0)';
-                dom.style.transform= 'scale(.5, .5) translate3d(-50%, 150%,0)';
-                if(this.checkInputExist()){
-                   this.getInput().classList.remove('focus')
-                }
-        },100)
+        if(dom){
+            setTimeout(()=>{
+                    // dom.style.bottom = '-50%';
+                    dom.style.webkitTransform = 'scale(.5, .5) translate3d(-50%, 150%,0)';
+                    dom.style.transform= 'scale(.5, .5) translate3d(-50%, 150%,0)';
+                    if(this.checkInputExist()){
+                       this.getInput().classList.remove('focus')
+                    }
+            },100)
+        }
     }
-    renderButton(){
 
-    }
 
     mvvm(data,key,value){
-
         Object.defineProperty(data, key, {
             enumerable: true, // 可枚举
             configurable: true, // 不能再define
@@ -290,23 +327,25 @@ class Keyboard {
                 return value;
             },
             set: newVal => {
-                // console.log('...........'+value)
                 value = newVal;
-                if(this.checkInputExist()){
-                    this.updatedom();
-                }else{
-                    document.getElementById('inputa').innerHTML = value
-                }
+                // console.log('~~~~~~~~~'+value)
+                this.updatedom();
             }
         });
     }
 
     updatedom(){
-        let dom = this.getInput();
-        dom.value = this.inputer.value;
-        dom.innerHTML = this.inputer.value;
-        this.dealplaceholder()
-   
+         let dom = this.getInput();
+         if(dom){
+            dom.value = this.inputer.value;
+            dom.innerHTML = this.inputer.value;
+            this.dealplaceholder();
+            
+         }else{
+            // this.dispatchEvent({type:'ck', message:this.inputer.value});
+            event.inputer = this.inputer.value;
+            document.dispatchEvent(event);
+         }
     }
 
     dealplaceholder(){
@@ -325,37 +364,59 @@ class Keyboard {
        console.log('i am callback');
     }
     getValue(){
-        alert(this.inputer.value);
+        return this.inputer.value;
+    }
+    clearValue(){
+        this.inputer.value = '';
     }
 
-    rebind(){
-        this.checkInputAttr();
-        this.bindinpudom();
-        this.mvvm(this.inputer,'value',this.inputer.value);
+
+    rebind(time){
+        var time = time || 0;
+        setTimeout(()=>{
+            this.checkInputAttr();
+            this.renderButton();
+            this.offbinddom();
+            this.bindinpudom();
+            this.mvvm(this.inputer,'value',this.inputer.value);
+        }, time)
     }
 
 }
 
 
-let inputs = document.querySelectorAll('input');
-inputs.forEach((ele,idx)=>{
-    ele.addEventListener('focus',()=>{
-        console.log(ele.getBoundingClientRect())
-    })
-})
+// let inputs = document.querySelectorAll('input');
+// inputs.forEach((ele,idx)=>{
+//     ele.addEventListener('focus',()=>{
+//         console.log(ele.getBoundingClientRect())
+//     })
+// })
 
 
+// Object.assign( Keyboard.prototype, EventDispatcher.prototype );
 
-let key = new Keyboard();
+var key;
 
-if (typeof define === 'function' && typeof define.amd === 'object' && define.amd) {
-    // AMD. Register as an anonymous module.
-    define(function() {
+var getKeyboard = function () {
+    if (key) {
+        return key
+    } else {
+        key = new Keyboard();
+        key.create();
         return key;
-    });
-} else if (typeof module !== 'undefined' && module.exports) {
-    module.exports = key;
-} else {
-    window.Keyboard = key;
+    }
+
 }
+module.exports = getKeyboard;
+
+// if (typeof define === 'function' && typeof define.amd === 'object' && define.amd) {
+//     // AMD. Register as an anonymous module.
+//     define(function() {
+//         return key;
+//     });
+// } else if (typeof module !== 'undefined' && module.exports) {
+//     module.exports = key;
+// } else {
+//     window.Keyboard = key;
+// }
 
