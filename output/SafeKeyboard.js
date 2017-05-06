@@ -96,7 +96,6 @@ define('SafeKeyboard.es6', function(require, exports, module) {
           this.showMap = [{ 'value': 1, 'facevalue': 1, 'showindex': 1, 'show': true }, { 'value': 2, 'facevalue': 2, 'showindex': 2, 'show': true }, { 'value': 3, 'facevalue': 3, 'showindex': 3, 'show': true }, { 'value': 4, 'facevalue': 4, 'showindex': 4, 'show': true }, { 'value': 5, 'facevalue': 5, 'showindex': 5, 'show': true }, { 'value': 6, 'facevalue': 6, 'showindex': 6, 'show': true }, { 'value': 7, 'facevalue': 7, 'showindex': 7, 'show': true }, { 'value': 8, 'facevalue': 8, 'showindex': 8, 'show': true }, { 'value': 9, 'facevalue': 9, 'showindex': 9, 'show': true }, { 'value': 'X', 'facevalue': 'X', 'showindex': 10, 'show': false }, { 'value': 0, 'facevalue': 0, 'showindex': 11, 'show': true }, { 'value': 'delete', 'facevalue': 'delete', 'showindex': 12, 'show': true }];
   
           this.checkInputAttr();
-          this.mvvm(this.inputer, 'value', this.inputer.value);
       }
   
       _createClass(Keyboard, [{
@@ -128,16 +127,41 @@ define('SafeKeyboard.es6', function(require, exports, module) {
                       });
                   }
               } else {
-                  this.type = '';
-                  this.inputer = { 'value': '' };
-                  this.autosubmit = false;
-                  this.maxLength = 999;
-                  this.showMap.forEach(function (ele, idx) {
-                      if (ele.value == 'X') {
-                          ele.show = false;
+                  if (document.querySelector('.myinput')) {
+                      // this.type = '';
+                      // this.inputer = {'value':''};
+                      // this.autosubmit = false;
+                      // this.maxLength = 999;
+                      // this.showMap.forEach((ele,idx)=>{
+                      //     if(ele.value == 'X'){
+                      //         ele.show = false;
+                      //     }
+                      // })
+                  } else {
+                      this.type = '';
+                      this.inputer.value = '';
+                      this.maxLength = 9999;
+                      if (this.type && this.type == 'identity') {
+                          this.showMap.forEach(function (ele, idx) {
+                              if (ele.value == 'X') {
+                                  ele.show = true;
+                              }
+                          });
+                      } else {
+                          this.showMap.forEach(function (ele, idx) {
+                              if (ele.value == 'X') {
+                                  ele.show = false;
+                              }
+                          });
                       }
-                  });
+  
+                      if (this.getDom('#keyboard')) {
+                          this.show();
+                      }
+                  }
               }
+  
+              this.mvvm(this.inputer, 'value', this.inputer.value);
           }
       }, {
           key: 'checkInputExist',
@@ -151,31 +175,6 @@ define('SafeKeyboard.es6', function(require, exports, module) {
       }, {
           key: 'create',
           value: function create() {
-              // if(this.type &&　this.type == 'identity'){
-              //     var tempArr = []
-              //     this.showMap.forEach((ele,idx)=>{
-              //         tempArr.push(ele)
-              //         if(idx == 8){
-              //             tempArr.push({'value':'X','facevalue':'X','showindex':10},)
-              //         }
-              //     })
-              //     this.showMap = tempArr;
-              // }else{
-              //     this.showMap =[
-              //         {'value':1,'facevalue':1,'showindex':1},
-              //         {'value':2,'facevalue':2,'showindex':2},
-              //         {'value':3,'facevalue':3,'showindex':3},
-              //         {'value':4,'facevalue':4,'showindex':4},
-              //         {'value':5,'facevalue':5,'showindex':5},
-              //         {'value':6,'facevalue':6,'showindex':6},
-              //         {'value':7,'facevalue':7,'showindex':7},
-              //         {'value':8,'facevalue':8,'showindex':8},
-              //         {'value':9,'facevalue':9,'showindex':9},
-              //         {'value':0,'facevalue':0,'showindex':11},
-              //         {'value':'delete','facevalue':'delete','showindex':12}
-              //     ]
-              // }
-  
   
               //create  keyboard
               var dom = document.createElement("div");
@@ -196,9 +195,10 @@ define('SafeKeyboard.es6', function(require, exports, module) {
               html.push('</ul>');
               dom.innerHTML = html.join('');
   
-              // ceatedom
+              // ceateKeyboarddom
               this.getDom('body').appendChild(dom);
   
+              // 给input绑定事件
               this.bindinpudom();
   
               // render keyboard button
@@ -341,14 +341,16 @@ define('SafeKeyboard.es6', function(require, exports, module) {
               var _this5 = this;
   
               var dom = this.getDom('#keyboard');
-              setTimeout(function () {
-                  // dom.style.bottom = '-50%';
-                  dom.style.webkitTransform = 'scale(.5, .5) translate3d(-50%, 150%,0)';
-                  dom.style.transform = 'scale(.5, .5) translate3d(-50%, 150%,0)';
-                  if (_this5.checkInputExist()) {
-                      _this5.getInput().classList.remove('focus');
-                  }
-              }, 100);
+              if (dom) {
+                  setTimeout(function () {
+                      // dom.style.bottom = '-50%';
+                      dom.style.webkitTransform = 'scale(.5, .5) translate3d(-50%, 300%,0)';
+                      dom.style.transform = 'scale(.5, .5) translate3d(-50%, 300%,0)';
+                      if (_this5.checkInputExist()) {
+                          _this5.getInput().classList.remove('focus');
+                      }
+                  }, 100);
+              }
           }
       }, {
           key: 'mvvm',
@@ -379,9 +381,9 @@ define('SafeKeyboard.es6', function(require, exports, module) {
                   this.dealplaceholder();
               } else {
                   // this.dispatchEvent({type:'ck', message:this.inputer.value});
-                  event.inputer = this.inputer.value;
-                  document.dispatchEvent(event);
               }
+              event.inputer = this.inputer.value;
+              document.dispatchEvent(event);
           }
       }, {
           key: 'dealplaceholder',
@@ -423,7 +425,6 @@ define('SafeKeyboard.es6', function(require, exports, module) {
                   _this7.renderButton();
                   _this7.offbinddom();
                   _this7.bindinpudom();
-                  _this7.mvvm(_this7.inputer, 'value', _this7.inputer.value);
               }, time);
           }
       }]);

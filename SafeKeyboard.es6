@@ -95,7 +95,7 @@ class Keyboard {
 
         
         this.checkInputAttr();
-        this.mvvm(this.inputer,'value',this.inputer.value);
+        
         
 
 
@@ -130,21 +130,40 @@ class Keyboard {
             
         }else{
             if(document.querySelector('.myinput')){
-                this.type = '';
-                this.inputer = {'value':''};
-                this.autosubmit = false;
-                this.maxLength = 999;
-                this.showMap.forEach((ele,idx)=>{
-                    if(ele.value == 'X'){
-                        ele.show = false;
-                    }
-                })
+                // this.type = '';
+                // this.inputer = {'value':''};
+                // this.autosubmit = false;
+                // this.maxLength = 999;
+                // this.showMap.forEach((ele,idx)=>{
+                //     if(ele.value == 'X'){
+                //         ele.show = false;
+                //     }
+                // })
             }else{
+                this.type = '';
+                this.inputer.value = '';
+                this.maxLength = 9999;
+                if(this.type && this.type == 'identity'){
+                    this.showMap.forEach((ele,idx)=>{
+                        if(ele.value == 'X'){
+                            ele.show = true;
+                        }
+                    })
+                }else{
+                    this.showMap.forEach((ele,idx)=>{
+                        if(ele.value == 'X'){
+                            ele.show = false;
+                        }
+                    })
+                }
+
                 if(this.getDom('#keyboard')){
-                    this.hide();
+                    this.show();
                 }
             }
         }
+
+        this.mvvm(this.inputer,'value',this.inputer.value);
     }
 
     checkInputExist(){
@@ -308,8 +327,8 @@ class Keyboard {
         if(dom){
             setTimeout(()=>{
                     // dom.style.bottom = '-50%';
-                    dom.style.webkitTransform = 'scale(.5, .5) translate3d(-50%, 150%,0)';
-                    dom.style.transform= 'scale(.5, .5) translate3d(-50%, 150%,0)';
+                    dom.style.webkitTransform = 'scale(.5, .5) translate3d(-50%, 300%,0)';
+                    dom.style.transform= 'scale(.5, .5) translate3d(-50%, 300%,0)';
                     if(this.checkInputExist()){
                        this.getInput().classList.remove('focus')
                     }
@@ -343,9 +362,9 @@ class Keyboard {
             
          }else{
             // this.dispatchEvent({type:'ck', message:this.inputer.value});
-            event.inputer = this.inputer.value;
-            document.dispatchEvent(event);
          }
+         event.inputer = this.inputer.value;
+         document.dispatchEvent(event);
     }
 
     dealplaceholder(){
@@ -378,7 +397,6 @@ class Keyboard {
             this.renderButton();
             this.offbinddom();
             this.bindinpudom();
-            this.mvvm(this.inputer,'value',this.inputer.value);
         }, time)
     }
 
