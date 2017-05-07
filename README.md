@@ -1,4 +1,4 @@
-增加持续集成
+增加持续集成 [![Build Status](https://travis-ci.org/kevinyan/SafeKeyboard.png?branch=master)](https://travis-ci.org/kevinyan/SafeKeyboard)
 
 # SafeKeyboard
 H5安全键盘
