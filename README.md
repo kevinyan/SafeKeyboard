@@ -1,5 +1,7 @@
 增加持续集成 [![Build Status](https://travis-ci.org/kevinyan/SafeKeyboard.png?branch=master)](https://travis-ci.org/kevinyan/SafeKeyboard)
 
+项目语言 ![language](https://img.shields.io/SafeKeyboard/language-javascript-orange.svg)
+
 # SafeKeyboard
 H5安全键盘
 
