@@ -1,27 +1,27 @@
-fis.match('*.less', {
-    parser: fis.plugin('less'),
-    rExt: '.css'
-})
+fis.match( '*.less', {
+	parser: fis.plugin( 'less' ),
+	rExt: '.css'
+} )
 
 
-fis.match('*.es6', {
-    parser: fis.plugin('babel-6.x', {
-        sourceMaps: true
-    }),
-    rExt: '.js'
-});
+fis.match( '*.es6', {
+	parser: fis.plugin( 'babel-6.x', {
+		sourceMaps: true
+	} ),
+	rExt: '.js'
+} );
 
 
 
-fis.hook('commonjs');
-fis.match('::package', {
-    postpackager: fis.plugin('loader', {
+fis.hook( 'commonjs' );
+fis.match( '::package', {
+	postpackager: fis.plugin( 'loader', {
 
-        // allInOne: true
-    }),
-});
+		// allInOne: true
+	} ),
+} );
 
 
-fis.match('*.es6', {
-    isMod: true
-});
+fis.match( '*.es6', {
+	isMod: true
+} );
