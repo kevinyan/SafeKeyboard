@@ -1,7 +1,6 @@
-[![Build Status](https://travis-ci.org/kevinyan/SafeKeyboard.png?branch=master)](https://travis-ci.org/kevinyan/SafeKeyboard)
-![language](https://img.shields.io/badge/language-javascript-orange.svg)
 
-# SafeKeyboard
+
+# SafeKeyboard [![Build Status](https://travis-ci.org/kevinyan/SafeKeyboard.png?branch=master)](https://travis-ci.org/kevinyan/SafeKeyboard)  ![language](https://img.shields.io/badge/language-javascript-orange.svg)
 H5安全键盘
 
 
