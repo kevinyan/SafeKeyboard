@@ -140,3 +140,11 @@ rebind | 重新绑定
 - fastclick
 - 禁止长按
 - 动画、缩放
+
+
+
+## 一些常识
+### 更新Npm包
+
+- ``` npm version patch```, 此命令会把package.json的version更新到0.02
+- 然后执行```npm publish```就可以更新到npm了
