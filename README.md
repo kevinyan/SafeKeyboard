@@ -28,9 +28,15 @@ $(document).off('build').on('build', function (event) {
 
 ### way2
 ```js
-<script type="text/javascript" src="SafeKeyboard.js"></script>
-// ...
 <div class="safekeyboardinputer myinputer" id="skeyinputer"></div>
+//  ....
+<script>
+var safeKeyboard = require('SafeKeyboard.js');
+$('.sure').on('click', function () {            
+		var input = safeKeyboard.getValue();
+		alert(input);
+})
+</script>
 ```
 
 
