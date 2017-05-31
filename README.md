@@ -10,9 +10,9 @@ H5安全键盘
 - [TODO] 系统默认输入框。SK提供数据绑定与位置计算
 
 
+
+
 # How To Use
-
-
 
 ### Way1
 ```js
@@ -145,6 +145,11 @@ rebind | 重新绑定
 
 
 ## 一些常识
+## 编译：
+```
+sh build.sh
+```
+
 ### 更新Npm包
 
 - ``` npm version patch```, 此命令会把package.json的version更新到0.02
