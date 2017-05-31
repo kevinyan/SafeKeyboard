@@ -63,10 +63,10 @@ body #keyboard ul .keyamountline #kholder12 {
 }
 body #keyboard ul .keyamountline #keyboarddelete {
   text-indent: -9999rem;
-  background: url(/src/delete.svg) no-repeat center #e5e7eb;
+  background: url(src/delete.svg) no-repeat center #e5e7eb;
 }
 body #keyboard ul .keyamountline #keyboarddelete:active {
-  background: url(/src/delete.svg) no-repeat center #f0f0f0;
+  background: url(src/delete.svg) no-repeat center #f0f0f0;
 }
 @-webkit-keyframes blink {
   0%,
