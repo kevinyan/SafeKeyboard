@@ -28,7 +28,13 @@ require('SafeKeyboard.js');
 
 ### Step2: 初始化引用
 ```js
-key.init();
+var safeKeyboard = require('SafeKeyboard.js');
+
+safeKeyboard.rebind();
+
+$(document).off('build').on('build', function (event) {
+		// dosth.
+})
 ```
 
 
