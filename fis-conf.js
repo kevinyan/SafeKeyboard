@@ -1,6 +1,7 @@
 fis.match( '*.less', {
 	parser: fis.plugin( 'less' ),
-	rExt: '.css'
+	rExt: '.css',
+	release: './index.css'
 } )
 
 
@@ -8,7 +9,8 @@ fis.match( '*.es6', {
 	parser: fis.plugin( 'babel-6.x', {
 		sourceMaps: true
 	} ),
-	rExt: '.js'
+	rExt: '.js',
+	release: './index.js'
 } );
 
 
@@ -16,7 +18,6 @@ fis.match( '*.es6', {
 fis.hook( 'commonjs' );
 fis.match( '::package', {
 	postpackager: fis.plugin( 'loader', {
-
 		// allInOne: true
 	} ),
 } );

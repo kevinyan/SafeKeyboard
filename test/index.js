@@ -1,4 +1,4 @@
-var key = require('SafeKeyboard.es6');
+var key = require('../src/SafeKeyboard.es6');
 key = key();
 
 // key.addEventListener('ck', function (event) {
