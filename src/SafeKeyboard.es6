@@ -488,15 +488,15 @@ var getKeyboard = function () {
 	}
 
 }
-module.exports = getKeyboard;
 
-// if (typeof define === 'function' && typeof define.amd === 'object' && define.amd) {
-//     // AMD. Register as an anonymous module.
-//     define(function() {
-//         return key;
-//     });
-// } else if (typeof module !== 'undefined' && module.exports) {
-//     module.exports = key;
-// } else {
-//     window.Keyboard = key;
-// }
+
+if (typeof define === 'function' && typeof define.amd === 'object' && define.amd) {
+    // AMD. Register as an anonymous module.
+    define(function() {
+        return key;
+    });
+} else if (typeof module !== 'undefined' && module.exports) {
+    module.exports = getKeyboard;
+} else {
+		window.Keyboard  = getKeyboard;
+}
