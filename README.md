@@ -12,21 +12,9 @@ H5安全键盘
 
 # How To Use
 
-### Step1: 资源引用
 
-- requier引用
 
-```js
-require('SafeKeyboard.js');
-```
-
-- 直接引用
-
-``` html    
-<script type="text/javascript" src="SafeKeyboard.js"></script>
-```
-
-### Step2: 初始化引用
+### Way1
 ```js
 var safeKeyboard = require('SafeKeyboard.js');
 
@@ -38,16 +26,17 @@ $(document).off('build').on('build', function (event) {
 ```
 
 
-### [可选] Step3: 页面中DOM
-
-```html
+### way2
+```js
+<script type="text/javascript" src="SafeKeyboard.js"></script>
+// ...
 <div class="safekeyboardinputer myinputer" id="skeyinputer"></div>
 ```
 
 
 
 
-### [可选] Step4. Dom Attr 属性表
+### [可选] Dom Attr 属性表
 
 参数 | value | 说明 | 是否必选
 ---|--- |--- |--- |
@@ -62,7 +51,7 @@ autosubmit | true | 搭配max-length使用，自动提交 | ×
 autofocus | true | 默认自动聚焦 | ×
 pattern | 正则 | 规则 | ×
 
-### [可选] Step5. 键盘功能接口
+### [可选] 键盘功能接口
 
 参数 | 说明
 ---|---
