@@ -1,7 +1,7 @@
 fis.match( '*.less', {
 	parser: fis.plugin( 'less' ),
 	rExt: '.css',
-	release: './index.css'
+	release: './safekeyboard.css'
 } )
 
 
@@ -10,7 +10,7 @@ fis.match( '*.es6', {
 		sourceMaps: true
 	} ),
 	rExt: '.js',
-	release: './index.js'
+	release: './safekeyboard.js'
 } );
 
 fis.hook('relative');

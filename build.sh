@@ -2,9 +2,9 @@
 fis3 release -d ./output
 
 echo 'move start'
-cp ./output/index.js ./index.js
+cp ./output/safekeyboard.js ./safekeyboard.js
 
-cp ./output/index.css ./index.css
+cp ./output/safekeyboard.css ./safekeyboard.css
 echo 'move end'
 
 rm -rf ./output
