@@ -24,5 +24,5 @@ fis.match( '::package', {
 
 
 fis.match( '*.es6', {
-	// isMod: true
+	isMod: true
 } );
